@@ -1,0 +1,236 @@
+<div class="teacher-container">
+
+  <!-- HEADER -->
+  <div class="page-header">
+    <h1><i class="fas fa-chalkboard-teacher"></i> Teacher Management</h1>
+    <p class="subtitle">Manage teachers, verify OTP & control status</p>
+  </div>
+
+  <!-- ALERTS -->
+  <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show">
+    <i class="fas fa-exclamation-triangle me-2"></i>{{errorMessage}}
+    <button class="btn-close" (click)="clearMessages()"></button>
+  </div>
+
+  <div *ngIf="successMessage" class="alert alert-success alert-dismissible fade show">
+    <i class="fas fa-check-circle me-2"></i>{{successMessage}}
+    <button class="btn-close" (click)="clearMessages()"></button>
+  </div>
+
+  <!-- LOADING -->
+  <div *ngIf="isLoading" class="loading-container">
+    <div class="spinner-border text-primary"></div>
+    <p>Loading teachers...</p>
+  </div>
+
+  <!-- LIST VIEW -->
+  <div *ngIf="viewMode === 'LIST'">
+
+    <div *ngIf="!isLoading && teachers.length" class="stats-row">
+      <div class="stat-card active">
+        <i class="fas fa-user-check"></i>
+        <div>{{activeTeachersCount}} <span>Active</span></div>
+      </div>
+
+      <div class="stat-card inactive">
+        <i class="fas fa-user-slash"></i>
+        <div>{{inactiveTeachersCount}} <span>Inactive</span></div>
+      </div>
+
+      <div class="stat-card total">
+        <i class="fas fa-users"></i>
+        <div><h3>{{teachers.length}}</h3><span>Total</span></div>
+      </div>
+    </div>
+
+    <!-- TABLE -->
+    <div *ngIf="teachers.length && !isLoading" class="table-card">
+
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5><i class="fas fa-list me-2"></i>Teachers List</h5>
+        <button class="btn btn-primary btn-sm" (click)="openAddForm()">
+          <i class="fas fa-plus me-1"></i>Add New
+        </button>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead class="table-dark">
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Mobile</th>
+              <th>Designation</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let teacher of teachers">
+              <td>
+                <div class="teacher-info">
+                  <div class="avatar">{{teacher.name[0]}}</div>
+                  {{teacher.name}}
+                </div>
+              </td>
+              <td>{{teacher.email}}</td>
+              <td>{{teacher.mobile}}</td>
+              <td>{{teacher.designation}}</td>
+
+              <td>
+                <span class="status-badge"
+                  [ngClass]="teacher.status === TeacherStatus.ACTIVE ? 'active' : 'inactive'">
+                  {{teacher.status}}
+                </span>
+              </td>
+
+              <td>
+                <button class="btn btn-sm btn-outline-primary" (click)="editTeacher(teacher)">Edit</button>
+                <button class="btn btn-sm btn-outline-warning" (click)="toggleStatus(teacher)">Toggle</button>
+                <button class="btn btn-sm btn-outline-danger" (click)="deleteTeacher(teacher.id)">Delete</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD / UPDATE FORM -->
+  <div *ngIf="viewMode === 'ADD'" class="overlay" (click)="goBackToList()">
+
+    <div class="form-card" (click)="$event.stopPropagation()">
+
+      <div class="card-header">
+        <h5>{{ selectedTeacherId ? 'Update Teacher' : 'Add New Teacher' }}</h5>
+      </div>
+
+      <div class="card-body">
+
+        <!-- 🔥 IMPORTANT CHANGE -->
+        <form [formGroup]="teacherForm"
+              (ngSubmit)="selectedTeacherId ? updateTeacher() : registerTeacher()">
+
+          <div class="row g-3">
+
+            <div class="col-md-6">
+              <label>Full Name</label>
+              <input formControlName="name" class="form-control">
+            </div>
+
+            <div class="col-md-6">
+              <label>Email</label>
+              <input formControlName="email" class="form-control">
+            </div>
+
+            <div class="col-md-6">
+              <label>Mobile</label>
+              <input formControlName="mobile" class="form-control">
+            </div>
+
+            <div class="col-md-6">
+              <label>Password</label>
+              <input type="password" formControlName="password" class="form-control">
+            </div>
+
+            <div class="col-md-6">
+              <label>Designation</label>
+              <input formControlName="designation" class="form-control">
+            </div>
+
+            <div class="col-md-6">
+              <label>Qualification</label>
+              <input formControlName="qualification" class="form-control">
+            </div>
+
+            <!-- 🔥 IMPORTANT (update ke liye) -->
+            <div class="col-md-6">
+              <label>Subject</label>
+              <input formControlName="subject" class="form-control">
+            </div>
+
+            <div class="col-12">
+              <label>School ID</label>
+              <input type="number" formControlName="schoolId" class="form-control">
+            </div>
+
+          </div>
+
+          <div class="form-actions d-flex justify-content-end gap-2 mt-3">
+
+            <button type="button" class="btn btn-secondary" (click)="goBackToList()">
+              ← Back
+            </button>
+
+            <!-- 🔥 Dynamic Button -->
+            <button class="btn btn-primary" type="submit">
+              {{ selectedTeacherId ? 'Update Teacher' : 'Send OTP & Register' }}
+            </button>
+
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- OTP FORM (unchanged) -->
+  <div *ngIf="viewMode === 'OTP'" class="overlay" (click)="goBackToList()">
+
+    <div class="form-card" (click)="$event.stopPropagation()">
+
+      <div class="card-header">
+        <h5>Verify OTP</h5>
+        <p>OTP sent to: <strong>{{sentEmail}}</strong></p>
+      </div>
+
+      <div class="card-body">
+
+        <form [formGroup]="otpForm" (ngSubmit)="verifyOtp()">
+
+          <div class="row g-3">
+
+            <div class="col-12">
+              <label>Enter OTP</label>
+              <input formControlName="otp" class="form-control">
+            </div>
+
+            <div class="col-md-6">
+              <label>Designation</label>
+              <input formControlName="designation" class="form-control">
+            </div>
+
+            <div class="col-md-6">
+              <label>Qualification</label>
+              <input formControlName="qualification" class="form-control">
+            </div>
+
+            <div class="col-12">
+              <label>Subject</label>
+              <input formControlName="subject" class="form-control">
+            </div>
+
+          </div>
+
+          <div class="form-actions mt-3 d-flex justify-content-end gap-2">
+            <button type="button" class="btn btn-secondary" (click)="goBackToList()">← Back</button>
+            <button class="btn btn-success" type="submit">Verify OTP</button>
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="back-btn-container">
+  <button (click)="goBack()">Back</button>
+</div>
+
+
+</div>

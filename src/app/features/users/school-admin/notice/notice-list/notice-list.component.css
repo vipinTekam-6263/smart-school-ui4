@@ -1,0 +1,302 @@
+/* ========================================
+   NOTICE LIST - CLEAN MODERN DESIGN
+   Matches your existing dashboard style
+======================================== */
+
+/* ROOT COLORS (तुम्हारे same) */
+:root {
+  --primary: #2563eb;
+  --success: #10b981;
+  --danger: #ef4444;
+  --warning: #f59e0b;
+  --dark: #1f2937;
+  --card-bg: #1f2937;
+  --shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+/* CONTAINER */
+.container-fluid {
+  padding: 2rem;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  min-height: 100vh;
+  font-family: 'Inter', -apple-system, sans-serif;
+}
+
+/* HEADER */
+h4 {
+  color: white;
+  font-weight: 700;
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.d-flex {
+  padding: 1rem 0;
+}
+
+/* ADD BUTTON */
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary), #1d4ed8);
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  padding: 12px 24px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(37,99,235,0.3);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(37,99,235,0.4);
+  background: linear-gradient(135deg, #1d4ed8, var(--primary));
+}
+
+/* CARD */
+.card {
+  border: none;
+  border-radius: 16px;
+  background: var(--card-bg);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+.card-body {
+  padding: 0;
+}
+
+/* EMPTY STATE */
+.text-center.py-5 {
+  padding: 4rem 2rem !important;
+  color: #64748b;
+}
+
+.text-center.py-5 i {
+  opacity: 0.5;
+  transition: all 0.3s ease;
+}
+
+.text-center.py-5:hover i {
+  opacity: 0.8;
+  transform: scale(1.1);
+}
+
+h5.text-muted {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 1rem 0 0.5rem 0;
+}
+
+/* TABLE */
+.table-responsive {
+  border-radius: 0 0 16px 16px;
+}
+
+.table {
+  background: transparent;
+  color: white;
+  margin-bottom: 0;
+}
+
+.table thead th {
+  background: linear-gradient(135deg, #475569, #334155);
+  color: white;
+  font-weight: 700;
+  border: none;
+  padding: 1.25rem 1.5rem;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.table tbody td {
+  padding: 1.25rem 1.5rem;
+  border-color: #374151;
+  vertical-align: middle;
+  transition: all 0.2s ease;
+}
+
+.table-hover tbody tr {
+  transition: all 0.3s ease;
+}
+
+.table-hover tbody tr:hover {
+  background: rgba(37,99,235,0.08);
+  transform: scale(1.01);
+}
+
+/* TEXT TRUNCATE */
+.text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+}
+
+strong {
+  color: #f8fafc;
+  font-weight: 700;
+}
+
+small.text-muted {
+  font-size: 0.8rem;
+}
+
+/* BADGES */
+.badge {
+  padding: 8px 16px;
+  border-radius: 25px;
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.bg-success {
+  background: linear-gradient(135deg, var(--success), #059669) !important;
+  color: white !important;
+}
+
+.bg-warning {
+  background: linear-gradient(135deg, var(--warning), #d97706) !important;
+  color: white !important;
+}
+
+.bg-light {
+  background: #475569 !important;
+  color: #e2e8f0 !important;
+  border: 1px solid #64748b;
+}
+
+/* BUTTON GROUP */
+.btn-group {
+  gap: 4px;
+}
+
+.btn-group-sm .btn {
+  padding: 8px 12px;
+  font-size: 0.85rem;
+  border-radius: 8px !important;
+  border-width: 2px;
+  transition: all 0.3s ease;
+  min-width: 42px;
+}
+
+.btn-outline-primary {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.btn-outline-primary:hover {
+  background: var(--primary);
+  color: white;
+  transform: translateY(-1px);
+}
+
+.btn-outline-danger {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.btn-outline-danger:hover {
+  background: var(--danger);
+  color: white;
+  transform: translateY(-1px);
+}
+
+.btn-outline-success {
+  border-color: var(--success);
+  color: var(--success);
+}
+
+.btn-outline-success:hover {
+  background: var(--success);
+  color: white;
+  transform: translateY(-1px);
+}
+
+/* RESPONSIVE */
+@media (max-width: 992px) {
+  .container-fluid {
+    padding: 1.5rem 1rem;
+  }
+  
+  h4 {
+    font-size: 1.25rem;
+  }
+  
+  .table thead th,
+  .table tbody td {
+    padding: 1rem 1rem;
+    font-size: 0.9rem;
+  }
+  
+  .btn-group-sm .btn {
+    padding: 6px 10px;
+    min-width: 38px;
+  }
+}
+
+@media (max-width: 768px) {
+  .d-flex {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+  
+  .btn-primary {
+    justify-content: center;
+  }
+  
+  .table-responsive {
+    font-size: 0.85rem;
+  }
+  
+  .text-truncate {
+    max-width: 150px;
+  }
+}
+
+/* ANIMATIONS */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.table tbody tr {
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+/* SMOOTH SCROLLBAR */
+.table-responsive::-webkit-scrollbar {
+  height: 8px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+  background: #334155;
+  border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+  background: #1d4ed8;
+}

@@ -1,0 +1,53 @@
+.notifications {
+  position: fixed;
+  left: 20px;
+  bottom: 20px;
+  width: 280px; /* box width */
+  height: 180px; /* thoda bada ki messages comfortably fit ho */
+  padding: 12px;
+  border-radius: 12px;
+  border: 2px solid #ffdd59;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(8px);
+  overflow: hidden;
+  z-index: 1000;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+.notifications h3 {
+  font-size: 15px;
+  color: #ffdd59;
+  margin-bottom: 8px;
+  flex-shrink: 0; /* header fixed */
+}
+
+.notif-wrapper {
+  flex: 1; /* wrapper fills remaining height */
+  overflow: hidden;
+  position: relative;
+}
+
+.notif-wrapper ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  width: 100%;
+  animation: scroll 12s linear infinite;
+}
+
+.notif-wrapper li {
+  padding: 10px; /* thoda space li ke andar */
+  font-size: 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+  width: 100%; /* poora width le */
+  box-sizing: border-box;
+}
+
+/* Smooth vertical scroll */
+@keyframes scroll {
+  0% { top: 100%; }
+  100% { top: -100%; } /* jitna li height hai, utna scroll */
+}

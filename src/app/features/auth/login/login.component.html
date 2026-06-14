@@ -1,0 +1,145 @@
+<div class="login-page">
+
+  <div class="bg-animation"></div>
+
+  <div class="login-card">
+
+    <div class="logo">Smart School</div>
+
+    <!-- ================= LOGIN FORM ================= -->
+    <form (ngSubmit)="login()" #loginForm="ngForm">
+
+      <div class="input-box">
+        <input type="text"
+               [(ngModel)]="email"
+               name="username"
+               required>
+        <label>Email or Phone</label>
+      </div>
+
+      <div class="input-box">
+        <input [type]="showPassword ? 'text' : 'password'"
+               [(ngModel)]="password"
+               name="password"
+               required>
+        <label>Password</label>
+      </div>
+
+      <div class="options">
+        <label class="remember">
+          <input type="checkbox"> Remember me
+        </label>
+
+        <div class="security-note">
+          Secured login with OTP verification
+        </div>
+      </div>
+
+      <button type="submit"
+              class="login-btn"
+              [disabled]="isLoading">
+        {{ isLoading ? 'Loading...' : 'Login' }}
+      </button>
+
+    </form>
+
+    <!-- ================= OTP SECTION ================= -->
+    <div *ngIf="showOtpField">
+
+      <hr style="margin:15px 0; opacity:0.3;">
+
+      <div class="subtitle">OTP Verification</div>
+
+      <button type="button"
+              class="login-btn"
+              (click)="sendOtp()">
+        Send OTP
+      </button>
+
+      <div class="input-box" style="margin-top:15px;">
+        <input type="text"
+               [(ngModel)]="otp"
+               name="otpValue"
+               maxlength="6">
+        <label>Enter OTP</label>
+      </div>
+
+      <div style="font-size:12px;">
+        OTP expires in <b>{{ timer }}</b> sec
+      </div>
+
+      <button type="button"
+              class="login-btn"
+              (click)="verifyOtp()"
+              [disabled]="!otp">
+        Verify OTP
+      </button>
+
+      <div style="margin-top:10px;">
+        Didn't receive OTP?
+        <span (click)="resendOtp()"
+              style="cursor:pointer; text-decoration:underline;">
+          Resend
+        </span>
+      </div>
+
+    </div>
+
+    <!-- ================= FORGOT PASSWORD ================= -->
+    <div *ngIf="isForgotFlow">
+
+      <hr style="margin:15px 0; opacity:0.3;">
+
+      <div class="subtitle">Forgot Password</div>
+
+      <div class="input-box">
+        <input type="text"
+               [(ngModel)]="email"
+               name="forgotEmail">
+        <label>Email or Phone</label>
+      </div>
+
+      <button type="button"
+              class="login-btn"
+              (click)="sendForgotOtp()">
+        Send Reset OTP
+      </button>
+
+    </div>
+
+    <!-- ================= RESET PASSWORD ================= -->
+    <div *ngIf="isResetFlow">
+
+      <hr style="margin:15px 0; opacity:0.3;">
+
+      <div class="subtitle">Reset Password</div>
+
+      <div class="input-box">
+        <input type="text"
+               [(ngModel)]="otp"
+               name="resetOtp">
+        <label>Enter OTP</label>
+      </div>
+
+      <div class="input-box">
+        <input type="password"
+               [(ngModel)]="newPassword"
+               name="newPassword">
+        <label>New Password</label>
+      </div>
+
+      <button type="button"
+              class="login-btn"
+              (click)="resetPassword()">
+        Reset Password
+      </button>
+
+    </div>
+
+    <!-- ================= EXTRA ================= -->
+    <div class="extra">
+      <a (click)="sendForgotOtp()">Forgot Password?</a>
+    </div>
+
+  </div>
+</div>

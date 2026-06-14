@@ -1,0 +1,94 @@
+<h2>📚 Student List</h2>
+
+<!-- ADD BUTTON -->
+<button (click)="openAddStudentModal()">
+  ➕ Add Student
+</button>
+
+<!-- ================= TABLE ================= -->
+<table border="1" width="100%" style="margin-top:10px">
+
+  <tr>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Mobile</th>
+    <th>Class</th>
+    <th>Section</th>
+    <th>Action</th>
+  </tr>
+
+  <tr *ngFor="let s of students">
+
+    <td>{{s.name}}</td>
+    <td>{{s.email}}</td>
+    <td>{{s.mobile}}</td>
+    <td>{{s.studentClass}}</td>
+    <td>{{s.section}}</td>
+
+    <td>
+      <button (click)="editStudent(s)">Edit</button>
+      <button (click)="deleteStudent(s.id)">Delete</button>
+    </td>
+
+  </tr>
+
+</table>
+
+<div *ngIf="students.length === 0">
+  ❗ No students found
+</div>
+
+<!-- ================= PAGINATION ================= -->
+<div style="margin-top:10px">
+
+  <button (click)="prevPage()" [disabled]="pageNumber === 0">
+    Prev
+  </button>
+
+  <span>
+    Page {{pageNumber + 1}} / {{totalPages}}
+  </span>
+
+  <button (click)="nextPage()" [disabled]="pageNumber >= totalPages - 1">
+    Next
+  </button>
+
+</div>
+
+<!-- ================= MODAL ================= -->
+<div *ngIf="showAddStudentModal">
+
+  <h3>
+    {{isEditMode ? 'Update Student' : 'Add Student'}}
+  </h3>
+
+  <input placeholder="Name" [(ngModel)]="newStudent.name">
+  <input placeholder="Email" [(ngModel)]="newStudent.email">
+  <input placeholder="Mobile" [(ngModel)]="newStudent.mobile">
+  <input placeholder="Password" [(ngModel)]="newStudent.password">
+
+  <input placeholder="OTP" [(ngModel)]="otp">
+
+  <select [(ngModel)]="newStudent.studentClass">
+    <option value="10">10</option>
+    <option value="11">11</option>
+    <option value="12">12</option>
+  </select>
+
+  <select [(ngModel)]="newStudent.section">
+    <option value="A">A</option>
+    <option value="B">B</option>
+    <option value="C">C</option>
+  </select>
+
+  <br><br>
+
+  <button (click)="isEditMode ? updateStudent() : addStudent()">
+    {{isEditMode ? 'Update' : 'Send OTP'}}
+  </button>
+
+  <button (click)="verifyStudent()" *ngIf="!isEditMode">
+    Verify OTP
+  </button>
+
+</div>

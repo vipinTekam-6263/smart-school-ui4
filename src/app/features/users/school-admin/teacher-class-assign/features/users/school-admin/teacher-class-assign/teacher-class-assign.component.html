@@ -1,0 +1,107 @@
+<div class="assign-container">
+
+  <h2>👨‍🏫 Assign Teacher to Class</h2>
+
+  <form (ngSubmit)="assignTeacher()" #formRef="ngForm">
+
+    <!-- ================= TEACHER ================= -->
+    <div class="form-group">
+      <label>Teacher</label>
+      <select
+        name="teacherId"
+        [(ngModel)]="form.teacherId"
+        required>
+
+        <option [ngValue]="0">Select Teacher</option>
+
+        <option *ngFor="let t of teachers" [ngValue]="t.id">
+          {{ t.name || t.teacherName }}
+        </option>
+
+      </select>
+    </div>
+
+    <!-- ================= CLASS ================= -->
+    <div class="form-group">
+      <label>Class</label>
+      <select
+        name="classId"
+        [(ngModel)]="form.classId"
+        required>
+
+        <option [ngValue]="0">Select Class</option>
+
+        <option *ngFor="let c of classes" [ngValue]="c.id">
+          {{ c.name }}
+        </option>
+
+      </select>
+    </div>
+
+    <!-- ================= SECTION ================= -->
+    <div class="form-group">
+      <label>Section</label>
+      <select
+        name="sectionId"
+        [(ngModel)]="form.sectionId"
+        required>
+
+        <option [ngValue]="0">Select Section</option>
+
+        <option *ngFor="let s of sections" [ngValue]="s.id">
+          {{ s.name }}
+        </option>
+
+      </select>
+    </div>
+
+    <!-- ================= ACADEMIC YEAR ================= -->
+    <div class="form-group">
+      <label>Academic Year</label>
+      <select
+        name="academicYearId"
+        [(ngModel)]="form.academicYearId"
+        required>
+
+        <option [ngValue]="0">Select Year</option>
+
+        <option *ngFor="let y of academicYears" [ngValue]="y.id">
+          {{ y.year }}
+        </option>
+
+      </select>
+    </div>
+
+    <!-- ================= SUBJECT ================= -->
+    <div class="form-group">
+      <label>Subject</label>
+      <input
+        type="text"
+        name="subject"
+        [(ngModel)]="form.subject"
+        placeholder="Enter Subject"
+        required />
+    </div>
+
+    <!-- ================= SCHOOL ID (AUTO FIX SUGGESTED) ================= -->
+    <div class="form-group">
+      <label>School ID</label>
+      <input
+        type="number"
+        name="schoolId"
+        [(ngModel)]="form.schoolId"
+        placeholder="Enter School ID"
+        required />
+    </div>
+
+    <!-- ================= BUTTON ================= -->
+    <div class="form-group">
+      <button type="submit"
+              [disabled]="loading || !formRef.form.valid">
+        {{ loading ? 'Assigning...' : 'Assign Teacher' }}
+      </button>
+    </div>
+
+  </form>
+
+</div>

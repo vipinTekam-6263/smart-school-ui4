@@ -1,0 +1,166 @@
+    <div class="school-list-container">
+
+    <!-- HEADER -->
+    <div class="header-section">
+        <h2>School Management</h2>
+
+        <div class="header-actions">
+        <button mat-raised-button color="primary" (click)="loadSchools()">
+            <mat-icon>refresh</mat-icon>
+            Refresh
+        </button>
+
+        <button mat-raised-button color="accent"
+                (click)="toggleAddForm()">
+            <mat-icon>{{ showAddForm ? 'close' : 'add' }}</mat-icon>
+            {{ showAddForm ? 'Cancel' : 'Add School' }}
+        </button>
+        </div>
+    </div>
+
+    <!-- FORM -->
+    <div class="add-form-section" *ngIf="showAddForm">
+
+        <mat-card>
+
+        <mat-card-header>
+            <mat-card-title>
+            {{ isEditMode ? 'Update School' : 'Add New School' }}
+            </mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+
+            <form (ngSubmit)="isEditMode ? updateSchool() : addSchool()">
+
+            <!-- School Name -->
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>School Name</mat-label>
+                <input matInput [(ngModel)]="schoolName" name="schoolName" required>
+            </mat-form-field>
+
+            <!-- Code -->
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>School Code</mat-label>
+                <input matInput [(ngModel)]="code" name="code" required>
+            </mat-form-field>
+
+            <!-- District -->
+      <mat-form-field appearance="outline" class="full-width">
+  <mat-label>District</mat-label>
+
+  <mat-select [(ngModel)]="districtId" name="districtId" required>
+
+    <!-- 🔍 SEARCH BOX -->
+    <mat-option>
+      <ngx-mat-select-search
+        [(ngModel)]="districtSearch"
+        name="districtSearch">
+      </ngx-mat-select-search>
+    </mat-option>
+
+    <!-- 📋 DISTRICT LIST -->
+   <mat-option *ngFor="let d of filteredDistricts" [value]="d.id">
+  {{ d.districtName }}
+</mat-option>
+
+  </mat-select>
+</mat-form-field>
+
+            <!-- Address -->
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Address</mat-label>
+                <textarea matInput [(ngModel)]="address" name="address" required></textarea>
+            </mat-form-field>
+
+            <!-- Submit -->
+            <button mat-raised-button color="primary" type="submit">
+                {{ isEditMode ? 'Update School' : 'Add School' }}
+            </button>
+
+            </form>
+
+        </mat-card-content>
+
+        </mat-card>
+    </div>
+
+    <!-- TABLE -->
+    <mat-card>
+
+        <mat-card-header>
+        <mat-card-title>School List</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+
+        <!-- LOADING -->
+        <div *ngIf="tableData.isLoading">
+            <mat-spinner></mat-spinner>
+        </div>
+
+        <!-- TABLE -->
+        <table mat-table [dataSource]="tableData.schools" class="mat-elevation-z8">
+
+            <!-- ID -->
+            <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef>ID</th>
+            <td mat-cell *matCellDef="let s">{{ s.id }}</td>
+            </ng-container>
+
+            <!-- NAME -->
+            <ng-container matColumnDef="schoolName">
+            <th mat-header-cell *matHeaderCellDef>School Name</th>
+            <td mat-cell *matCellDef="let s">{{ s.schoolName }}</td>
+            </ng-container>
+
+            <!-- CODE -->
+            <ng-container matColumnDef="code">
+            <th mat-header-cell *matHeaderCellDef>Code</th>
+            <td mat-cell *matCellDef="let s">{{ s.code }}</td>
+            </ng-container>
+
+            <!-- DISTRICT -->
+            <ng-container matColumnDef="districtId">
+            <th mat-header-cell *matHeaderCellDef>District</th>
+            <td mat-cell *matCellDef="let s">{{ getDistrictName(s.districtId) }}</td>
+            </ng-container>
+
+            <!-- STATUS -->
+            <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>Status</th>
+            <td mat-cell *matCellDef="let s">{{ s.status }}</td>
+            </ng-container>
+
+            <!-- ACTIONS -->
+            <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+
+            <td mat-cell *matCellDef="let s">
+
+                <button mat-icon-button color="primary" (click)="editSchool(s)">
+                <mat-icon>edit</mat-icon>
+                </button>
+
+                <button mat-icon-button color="warn" (click)="onDeleteSchool(s.id)">
+                <mat-icon>delete</mat-icon>
+                </button>
+
+            </td>
+
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="['id','schoolName','code','districtId','status','actions']"></tr>
+            <tr mat-row *matRowDef="let row; columns: ['id','schoolName','code','districtId','status','actions'];"></tr>
+
+        </table>
+
+        <!-- EMPTY -->
+        <div *ngIf="tableData.schools.length === 0">
+            No schools found
+        </div>
+
+        </mat-card-content>
+    </mat-card>
+
+    </div>

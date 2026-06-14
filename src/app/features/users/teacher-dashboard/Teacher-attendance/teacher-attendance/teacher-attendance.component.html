@@ -1,0 +1,113 @@
+<div class="attendance-container" *ngIf="isTeacher">
+
+  <!-- HEADER -->
+  <div class="header">
+    <h2>📋 Mark Attendance</h2>
+    <p>Manage student attendance (Section Wise)</p>
+  </div>
+
+  <!-- FORM -->
+  <div class="form-section">
+
+    <div class="form-group">
+      <label>Section</label>
+      <input type="text" [value]="selectedSectionId" readonly />
+    </div>
+
+    <div class="form-group">
+      <label>Date</label>
+      <input type="date" [(ngModel)]="selectedDate" />
+    </div>
+
+    <button (click)="loadAttendance()" [disabled]="loading || submitting">
+      {{ loading ? 'Loading...' : 'Load Students' }}
+    </button>
+
+  </div>
+
+  <!-- LOADING -->
+  <div *ngIf="loading" class="loading">
+    ⏳ Loading students...
+  </div>
+
+  <!-- ERROR -->
+  <div class="error" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </div>
+
+  <!-- TABLE -->
+  <div class="table-section" *ngIf="hasData && !loading">
+
+    <table>
+
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Student Name</th>
+          <th>Roll No</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let student of students; let i = index">
+
+          <td>{{ i + 1 }}</td>
+
+          <td>{{ student.studentName }}</td>
+          <td>{{ student.rollNumber || '-' }}</td>
+
+          <td>
+            <div class="status-buttons">
+
+              <button
+                (click)="updateStatus(student.studentClassId, 'PRESENT')"
+                [class.active]="getStatus(student.studentClassId) === 'PRESENT'"
+                [disabled]="submitting"
+                class="present-btn">
+                ✔ Present
+              </button>
+
+              <button
+                (click)="updateStatus(student.studentClassId, 'ABSENT')"
+                [class.active]="getStatus(student.studentClassId) === 'ABSENT'"
+                [disabled]="submitting"
+                class="absent-btn">
+                ✖ Absent
+              </button>
+
+            </div>
+          </td>
+
+        </tr>
+      </tbody>
+
+    </table>
+
+  </div>
+
+  <!-- SUBMIT -->
+  <div class="submit-section" *ngIf="hasData && !loading">
+
+    <button (click)="submitAttendance()" [disabled]="submitting || loading">
+      {{ submitting ? 'Submitting...' : 'Submit Attendance' }}
+    </button>
+
+    <p class="success" *ngIf="submitted">
+      ✅ Attendance submitted successfully!
+    </p>
+
+  </div>
+
+  <!-- 🔙 BACK BUTTON (BOTTOM) -->
+  <div class="back-section" *ngIf="hasData && !loading">
+    <button class="back-btn" (click)="goBack()">⬅ Back</button>
+  </div>
+
+</div>
+
+<!-- ACCESS DENIED -->
+<div *ngIf="!isTeacher" class="no-access">
+  <h3>🚫 Access Denied</h3>
+  <p>Only teachers can mark attendance</p>
+</div>

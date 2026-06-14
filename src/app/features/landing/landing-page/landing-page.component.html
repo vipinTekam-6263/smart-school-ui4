@@ -1,0 +1,302 @@
+<div class="landing-container">
+
+  <!-- TOP BAR CTA -->
+  <div class="top-bar">
+    <p>🎉 Trusted by {{activeSchools}}+ Schools & {{students}}+ Students Across India</p>
+    <button (click)="goToGetStarted()">Try Free Demo</button>
+  </div>
+
+<!-- NAVBAR -->
+<header class="navbar">
+  <div class="logo">
+    <span class="logo-icon">🏫</span>
+    <span class="logo-text">Classy</span>
+  </div>
+  
+  <!-- 🔥 NEW SEARCH BAR 🔥 -->
+  <div class="search-container">
+    <div class="search-box">
+      <i class="search-icon">🔍</i>
+      <input type="text" placeholder="Search courses, teachers..." class="search-input" 
+             [(ngModel)]="searchQuery" (input)="onSearch()">
+      <button class="search-btn" (click)="performSearch()">
+        <i>Go</i>
+      </button>
+    </div>
+  </div>
+
+  <nav class="nav-links">
+    <a href="#features" (click)="scrollToSection('features')">Features</a>
+    <a href="#pricing" (click)="scrollToSection('pricing')">Pricing</a>
+    <a href="#about" (click)="scrollToSection('about')">About</a>
+  </nav>
+
+  <div class="login-icon" (click)="goToLogin()">
+    🔐 Login
+  </div>
+</header>
+
+  <!-- MESSAGE -->
+  <div class="msg success" *ngIf="messageService.successMessage">
+    {{messageService.successMessage}}
+  </div>
+
+  <div class="msg error" *ngIf="messageService.errorMessage">
+    {{messageService.errorMessage}}
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-text">
+      <h1>Digitalize Your School with Classy SmartSchool</h1>
+      <p>
+        One powerful platform for Parents, Teachers & School Administration.
+        Manage Attendance, Homework, Exams & Notices in real-time.
+      </p>
+      <div class="hero-buttons">
+        <button class="btn primary" (click)="goToGetStarted()">🚀 Get Started</button>
+        <button class="btn secondary">📽 Watch Demo</button>
+      </div>
+      <div class="stats">
+        <div>
+          <h3>{{activeSchools}}</h3>
+          <p>Active Schools</p>
+        </div>
+        <div>
+          <h3>{{students}}</h3>
+          <p>Students</p>
+        </div>
+        <div>
+          <h3>99.9%</h3>
+          <p>Uptime</p>
+        </div>
+      </div>
+    </div>
+    <div class="hero-image">
+      <img src="/assets/Classy1.png" alt="Hero Image">
+    </div>
+  </section>
+
+  <!-- FEATURES - ID Added -->
+  <section id="features" class="features-section">
+    <h2>🚀 Everything You Need for Perfect School Management</h2>
+    <p style="font-size: 18px; color: #718096; max-width: 700px; margin: 20px auto 60px;">
+      Classy SmartSchool provides all essential tools in one platform
+    </p>
+    <div class="features">
+      <div class="card">
+        <div class="card-icon">📊</div>
+        <h4>Real-time Attendance</h4>
+        <p>Track attendance instantly with mobile app</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📚</div>
+        <h4>Smart Homework</h4>
+        <p>Assign & track homework digitally</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📝</div>
+        <h4>Online Exams</h4>
+        <p>Conduct exams & get instant results</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔔</div>
+        <h4>Instant Notices</h4>
+        <p>Send notifications to parents instantly</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📈</div>
+        <h4>Reports & Analytics</h4>
+        <p>Complete performance analytics</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">👨‍👩‍👧</div>
+        <h4>Parent Communication</h4>
+        <p>Stay connected with parents 24/7</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials">
+    <h2>⭐ What Schools Say About Us</h2>
+    <div class="testimonial-cards">
+      <div class="t-card">
+        <p>"Best school management system ever! Saved us hours daily."</p>
+        <div class="author">📚 St. Mary's School, Delhi</div>
+      </div>
+      <div class="t-card">
+        <p>"Attendance tracking is super easy. Parents love it!"</p>
+        <div class="author">🏫 Modern Public School, Mumbai</div>
+      </div>
+      <div class="t-card">
+        <p>"Parents are more connected now. Highly recommend!"</p>
+        <div class="author">🌟 Little Angels School, Bangalore</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING SECTION (UPDATED) -->
+<section id="pricing" class="pricing-section">
+  <h2>💰 Simple & Transparent Pricing</h2>
+  <p style="font-size: 18px; color: #718096; max-width: 700px; margin: 20px auto 60px;">
+    Choose the perfect plan for your school. (Demo only)
+  </p>
+
+  <div class="pricing">
+
+    <!-- BASIC -->
+    <div class="plan">
+      <h3>Basic</h3>
+      <p>Perfect for Small Schools</p>
+      <h2>₹499<span>/month</span></h2>
+
+      <ul class="plan-features">
+        <li>✓ Basic Attendance</li>
+        <li>✓ Notices</li>
+        <li>✓ 100 Students</li>
+      </ul>
+
+      <button class="btn primary"
+        (click)="goToLogin()"
+        style="width: 100%; margin-top: 20px;">
+        Try Demo
+      </button>
+    </div>
+
+    <!-- PRO -->
+    <div class="plan highlight">
+      <div class="popular-badge">Most Popular</div>
+
+      <h3>School Pro</h3>
+      <p>Recommended for Most Schools</p>
+
+      <h2>₹999<span>/month</span></h2>
+
+      <ul class="plan-features">
+        <li>✓ Everything in Basic</li>
+        <li>✓ Online Exams</li>
+        <li>✓ 1000 Students</li>
+        <li>✓ Analytics</li>
+      </ul>
+
+      <button class="btn primary"
+        (click)="goToLogin()"
+        style="width: 100%; margin-top: 20px;">
+        Try Demo
+      </button>
+    </div>
+
+    <!-- DISTRICT -->
+    <div class="plan">
+      <h3>District</h3>
+      <p>Multiple Schools</p>
+
+      <h2>₹1999<span>/month</span></h2>
+
+      <ul class="plan-features">
+        <li>✓ Everything in Pro</li>
+        <li>✓ Unlimited Students</li>
+        <li>✓ Priority Support</li>
+        <li>✓ Custom Reports</li>
+      </ul>
+
+      <button class="btn primary"
+        (click)="goToLogin()"
+        style="width: 100%; margin-top: 20px;">
+        Try Demo
+      </button>
+    </div>
+
+  </div>
+</section>
+<!-- ABOUT - New Section Added -->
+  <section id="about" class="about-section">
+    <div class="about-container">
+      <div class="about-text">
+        <h2>👨‍🏫 About Classy SmartSchool</h2>
+        <p>
+          Classy SmartSchool is India's leading digital platform designed 
+          specifically for Indian schools. We understand the unique challenges 
+          of Indian education system and built this platform to solve them.
+        </p>
+        <div class="about-features">
+          <div class="about-feature">
+            <span>🇮🇳</span>
+            <div>
+              <h4>India-First</h4>
+              <p>Built for Indian schools with local language support</p>
+            </div>
+          </div>
+          <div class="about-feature">
+            <span>⚡</span>
+            <div>
+              <h4>Lightning Fast</h4>
+              <p>Works perfectly even on 2G networks</p>
+            </div>
+          </div>
+          <div class="about-feature">
+            <span>💰</span>
+            <div>
+              <h4>Affordable</h4>
+              <p>Priced for every Indian school budget</p>
+            </div>
+          </div>
+        </div>
+        <button class="btn primary" style="margin-top: 30px;">Learn More</button>
+      </div>
+      <div class="about-image">
+        <div class="about-mockup">
+          <div class="phone">
+            <div class="screen">
+              <div class="dashboard">📊 Dashboard</div>
+              <div class="attendance">📋 Attendance</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <h2>Ready to Transform Your School? 🚀</h2>
+    <p style="font-size: 20px; color: #718096; margin: 20px 0 40px;">
+      Join 5000+ schools already using Classy SmartSchool
+    </p>
+    <button class="btn primary" (click)="goToGetStarted()" style="font-size: 20px; padding: 20px 50px;">
+      Start Free 14-Day Trial
+    </button>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-box">
+        <h3>🏫 Classy SmartSchool</h3>
+        <p>Modern School Management System for India</p>
+        <div class="social-links">
+          <a>📘 Facebook</a>
+          <a>📱 WhatsApp</a>
+          <a>📧 Email</a>
+        </div>
+      </div>
+      <div class="footer-box">
+        <h4>Contact</h4>
+<p>📧 support&#64;classyschool.in</p>
+        <p>📞 +91 98765 43210</p>
+        <p>📍 All India</p>
+      </div>
+      <div class="footer-box">
+        <h4>Quick Links</h4>
+        <a href="#features">Features</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#about">About</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Classy SmartSchool. All Rights Reserved. | Made in 🇮🇳</p>
+    </div>
+  </footer>
+
+</div>

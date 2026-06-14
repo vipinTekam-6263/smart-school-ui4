@@ -1,0 +1,178 @@
+<div class="state-list-container">
+
+  <!-- 🔥 Header -->
+  <div class="header-section">
+    <h2>District Management</h2>
+    <div class="header-actions">
+      <button mat-raised-button color="primary" (click)="loadDistricts()">
+        <mat-icon>refresh</mat-icon>
+        Refresh
+      </button>
+      <button mat-raised-button color="accent" (click)="toggleAddForm()">
+        <mat-icon>{{showAddForm ? 'close' : 'add'}}</mat-icon>
+        {{showAddForm ? 'Cancel' : 'Add District'}}
+      </button>
+    </div>
+  </div>
+
+  <!-- 🔥 Add / Update District Form -->
+  <div class="add-form-section" *ngIf="showAddForm">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>
+          {{ isEditMode ? 'Update District' : 'Add New District' }}
+        </mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content>
+
+        <!-- FORM -->
+        <form (ngSubmit)="isEditMode ? updateDistrict() : addDistrict()">
+
+          <!-- District Name -->
+          <mat-form-field appearance="outline" fullWidth>
+            <mat-label>District Name</mat-label>
+            <input matInput 
+                   [(ngModel)]="districtName" 
+                   name="districtName"
+                   placeholder="Enter district name"
+                   required>
+          </mat-form-field>
+
+          <!-- State ID -->
+          <mat-form-field appearance="outline" fullWidth>
+            <mat-label>State ID</mat-label>
+            <input matInput 
+                   type="number"
+                   [(ngModel)]="stateId" 
+                   name="stateId"
+                   placeholder="Enter state ID"
+                   required>
+          </mat-form-field>
+
+          <div class="form-actions">
+            <button mat-raised-button 
+                    color="primary" 
+                    type="submit"
+                    [disabled]="!districtName || !stateId">
+
+              <mat-spinner diameter="20" *ngIf="isAdding"></mat-spinner>
+
+              {{ isAdding 
+                  ? (isEditMode ? 'Updating...' : 'Adding...') 
+                  : (isEditMode ? 'Update District' : 'Add District') }}
+            </button>
+          </div>
+
+        </form>
+
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- 🔥 Stats -->
+  <div class="stats-section">
+    <mat-card>
+      <mat-card-content>
+        <div class="stat-item">
+          <strong>{{totalElements}}</strong>
+          <span>Total Districts</span>
+        </div>
+        <div class="stat-item">
+          <strong>{{districts.length}}</strong>
+          <span>Current Page</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- 🔥 Table -->
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>District List</mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content>
+
+      <!-- Loading -->
+      <div class="loading-container" *ngIf="isLoading">
+        <mat-spinner></mat-spinner>
+        <p>Loading districts...</p>
+      </div>
+
+      <!-- Table -->
+      <div class="table-container" *ngIf="!isLoading">
+
+        <table mat-table [dataSource]="districts" class="mat-elevation-z8">
+          
+          <!-- ID -->
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef>ID</th>
+            <td mat-cell *matCellDef="let district">{{district.id}}</td>
+          </ng-container>
+
+          <!-- Name -->
+          <ng-container matColumnDef="districtName">
+            <th mat-header-cell *matHeaderCellDef>District Name</th>
+            <td mat-cell *matCellDef="let district">{{district.districtName}}</td>
+          </ng-container>
+
+          <!-- State ID -->
+          <ng-container matColumnDef="stateId">
+            <th mat-header-cell *matHeaderCellDef>State ID</th>
+            <td mat-cell *matCellDef="let district">{{district.stateId}}</td>
+          </ng-container>
+
+          <!-- Actions -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+
+            <td mat-cell *matCellDef="let district">
+
+              <!-- EDIT -->
+              <button mat-icon-button 
+                      color="primary"
+                      (click)="editDistrict(district)">
+                <mat-icon>edit</mat-icon>
+              </button>
+
+              <!-- DELETE -->
+              <button mat-icon-button 
+                      color="warn"
+                      (click)="deleteDistrict(district.id)">
+                <mat-icon>delete</mat-icon>
+              </button>
+
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        </table>
+
+        <!-- No Data -->
+        <div class="no-data" *ngIf="districts.length === 0">
+          <p>No districts found</p>
+        </div>
+
+        <!-- Back Button -->
+        <div style="margin-top:20px; text-align:center;">
+          <button class="back-btn" (click)="goBack()">
+            ⬅️ Back
+          </button>
+        </div>
+
+        <!-- Paginator -->
+        <mat-paginator 
+          [length]="totalElements"
+          [pageSize]="size"
+          [pageSizeOptions]="[5,10,25]"
+          (page)="onPageChange($event)">
+        </mat-paginator>
+
+      </div>
+
+    </mat-card-content>
+  </mat-card>
+</div>

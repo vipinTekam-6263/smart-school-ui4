@@ -1,0 +1,219 @@
+<!-- exam.component.html -->
+<div class="container-fluid py-4">
+
+  <!-- ================= SUCCESS MESSAGE ================= -->
+  <div *ngIf="messageService.successMessage"
+       class="alert alert-success alert-dismissible fade show mb-4">
+
+    <i class="fas fa-check-circle me-2"></i>
+
+    {{ messageService.successMessage }}
+
+    <button type="button"
+            class="btn-close"
+            (click)="messageService.clear()">
+    </button>
+  </div>
+
+  <!-- ================= ERROR MESSAGE ================= -->
+  <div *ngIf="messageService.errorMessage"
+       class="alert alert-danger alert-dismissible fade show mb-4">
+
+    <i class="fas fa-exclamation-circle me-2"></i>
+
+    {{ messageService.errorMessage }}
+
+    <button type="button"
+            class="btn-close"
+            (click)="messageService.clear()">
+    </button>
+  </div>
+
+  <div class="row g-4">
+
+    <!-- ================= FORM ================= -->
+    <div class="col-lg-7">
+      <div class="card shadow-sm">
+
+        <!-- HEADER -->
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">
+            {{ isEditMode ? 'Edit Exam Schedule' : 'Create Exam Schedule' }}
+          </h5>
+        </div>
+
+        <div class="card-body">
+          <form [formGroup]="examForm" (ngSubmit)="onSubmit()">
+
+            <!-- CLASS + SECTION -->
+            <div class="row g-3 mb-3">
+
+              <!-- CLASS -->
+              <div class="col-md-6">
+                <label>Class *</label>
+                <select class="form-select" formControlName="classId">
+                  <option [ngValue]="null">Select Class</option>
+
+                  <option *ngFor="let c of classes" [ngValue]="c.id">
+                    {{ c.className || c.name || c.id }}
+                  </option>
+                </select>
+              </div>
+
+              <!-- SECTION -->
+              <div class="col-md-6">
+                <label>Section *</label>
+                <select class="form-select" formControlName="sectionId">
+                  <option [ngValue]="null">Select Section</option>
+                  <option [ngValue]="1">A</option>
+                  <option [ngValue]="2">B</option>
+                  <option [ngValue]="3">C</option>
+                  <option [ngValue]="4">D</option>
+                </select>
+              </div>
+
+            </div>
+
+            <!-- EXAM TYPE + SUBJECT -->
+            <div class="row g-3 mb-3">
+
+              <div class="col-md-6">
+                <label>Exam Type *</label>
+                <select class="form-select" formControlName="examType">
+                  <option [ngValue]="null">Select Type</option>
+                  <option value="UNIT_TEST">Unit Test</option>
+                  <option value="HALF_YEARLY">Half Yearly</option>
+                  <option value="ANNUAL">Annual</option>
+                  <option value="PRACTICAL">Practical</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label>Subject *</label>
+                <input type="text"
+                       class="form-control"
+                       formControlName="subject"
+                       placeholder="Enter subject">
+              </div>
+
+            </div>
+
+            <!-- DATE + TIME -->
+            <div class="row g-3 mb-3">
+
+              <div class="col-md-4">
+                <label>Exam Date *</label>
+                <input type="date"
+                       class="form-control"
+                       formControlName="examDate">
+              </div>
+
+              <div class="col-md-4">
+                <label>Start Time *</label>
+                <input type="time"
+                       class="form-control"
+                       formControlName="startTime">
+              </div>
+
+              <div class="col-md-4">
+                <label>End Time *</label>
+                <input type="time"
+                       class="form-control"
+                       formControlName="endTime">
+              </div>
+
+            </div>
+
+            <!-- MARKS -->
+            <div class="row g-3 mb-3">
+
+              <div class="col-md-6">
+                <label>Max Marks *</label>
+                <input type="number"
+                       class="form-control"
+                       formControlName="maxMarks">
+              </div>
+
+              <div class="col-md-6">
+                <label>Passing Marks</label>
+                <input type="number"
+                       class="form-control"
+                       formControlName="passingMarks">
+              </div>
+
+            </div>
+
+            <!-- ACADEMIC YEAR (FIXED POSITION) -->
+            <div class="mb-3">
+              <label>Academic Year *</label>
+
+              <select class="form-select" formControlName="academicYearId">
+                <option [ngValue]="null">Select Academic Year</option>
+
+                <option *ngFor="let y of academicYears" [ngValue]="y.id">
+                  {{ y.year }}
+                </option>
+
+              </select>
+            </div>
+
+            <!-- BUTTON -->
+            <div class="text-end">
+              <button class="btn btn-primary"
+                      type="submit"
+                      [disabled]="isLoading">
+
+                {{ isEditMode ? 'Update Exam' : 'Create Exam' }}
+
+              </button>
+            </div>
+
+          </form>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ================= LIST ================= -->
+    <div class="col-lg-5">
+      <div class="card shadow-sm">
+
+        <div class="card-header bg-success text-white">
+          Exam List ({{ exams.length }})
+        </div>
+
+        <div class="card-body">
+
+          <div *ngIf="exams.length === 0">
+            No exams found
+          </div>
+
+          <div *ngFor="let exam of exams" class="border p-2 mb-2">
+
+            <b>{{ exam.subject }}</b> <br>
+
+            Class: {{ exam.classId }} | Section: {{ exam.sectionId }} <br>
+
+            {{ exam.examDate }} ({{ exam.startTime }} - {{ exam.endTime }})
+
+            <div class="mt-2">
+              <button class="btn btn-sm btn-primary"
+                      (click)="editExam(exam)">
+                Edit
+              </button>
+
+              <button class="btn btn-sm btn-danger"
+                      (click)="deleteExam(exam.id)">
+                Delete
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>

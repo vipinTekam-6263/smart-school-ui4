@@ -1,0 +1,95 @@
+<div class="parent-dashboard">
+
+  <!-- HEADER -->
+  <header class="header">
+    <h1>Parent Dashboard</h1>
+  </header>
+
+  <!-- STUDENT INFO -->
+  <div class="students-section">
+    <h2>Student Details</h2>
+
+    <div class="student-card" *ngIf="dashboardData">
+      <div class="student-info">
+        <h3>{{ dashboardData.studentName }}</h3>
+        <p>Class: {{ dashboardData.className }} - {{ dashboardData.sectionName }}</p>
+        <p>Roll No: {{ dashboardData.rollNo }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUMMARY CARDS -->
+  <div class="summary-grid">
+
+    <!-- Attendance -->
+    <div class="card attendance">
+      <h3>Attendance</h3>
+      <p>{{ dashboardData?.attendancePercentage | number:'1.0-2' }}%</p>
+      <span>Present: {{ dashboardData?.presentDays }}</span>
+      <span>Absent: {{ dashboardData?.absentDays }}</span>
+    </div>
+
+    <!-- Homework -->
+<div class="card homework" (click)="goToHomeworkPage()">
+    <h3>Homework</h3>
+  <p>Total: {{ dashboardData?.homeworks?.length }}</p>
+
+  <!-- 🔥 LIST START -->
+  <div *ngFor="let hw of dashboardData?.homeworks">
+
+    <h4>{{ hw.subject }}</h4>
+    <p>{{ hw.description }}</p>
+
+    <!-- ⏳ TIMER -->
+    <p>{{ getTimeLeft(hw.dueDate) }}</p>
+
+  </div>
+  <!-- 🔥 LIST END -->
+
+</div>
+
+    <!-- Notices -->
+    <div class="card notices">
+      <h3>Notices</h3>
+      <p>Total: {{ dashboardData?.notices?.length }}</p>
+    </div>
+
+  </div>
+
+  <!-- NOTICES -->
+  <div class="section">
+    <h2>Latest Notices</h2>
+
+    <div class="notice-card" *ngFor="let notice of dashboardData?.notices">
+      <h4>{{ notice.title }}</h4>
+      <p>{{ notice.description }}</p>
+      <span *ngIf="notice?.startDate">
+        {{ notice.startDate | date:'dd-MM-yyyy' }}
+      </span>
+    </div>
+  </div>
+
+  <!-- EXAMS -->
+  <div class="section">
+    <h2>Upcoming Exams</h2>
+
+    <div class="exam-card" *ngFor="let exam of dashboardData?.exams">
+      <h4>{{ exam.subject }}</h4>
+
+      <p *ngIf="exam?.examDate">
+        Date: {{ exam.examDate | date:'dd-MM-yyyy' }}
+      </p>
+
+      <p>Time: {{ exam.startTime }} - {{ exam.endTime }}</p>
+      <p>Max Marks: {{ exam.maxMarks }}</p>
+    </div>
+
+    <!-- Highlight upcoming exam -->
+    <div *ngIf="dashboardData?.upcomingExamName">
+      <h3>Next Exam: {{ dashboardData?.upcomingExamName }}</h3>
+      <p>{{ dashboardData?.upcomingExamDate | date:'dd-MM-yyyy' }}</p>
+    </div>
+
+  </div>
+
+</div>

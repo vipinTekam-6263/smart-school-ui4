@@ -1,0 +1,100 @@
+<div class="teacher-dashboard">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="left">
+      <h1>Teacher Dashboard</h1>
+    </div>
+
+    <div class="right">
+      <span *ngIf="dashboardData">
+        👤 {{ dashboardData.teacherName }}
+      </span>
+
+      <button (click)="logout()" class="logout-btn">
+        Logout
+      </button>
+    </div>
+  </header>
+
+  <!-- TEACHER INFO -->
+  <div class="teacher-section" *ngIf="dashboardData">
+    <h2>Teacher Details</h2>
+
+    <div class="teacher-card">
+      <h3>{{ dashboardData.teacherName }}</h3>
+      <p>School: {{ dashboardData.schoolName }}</p>
+      <p>Section: {{ dashboardData.sectionName }}</p>
+    </div>
+  </div>
+
+  <!-- SUMMARY CARDS -->
+  <div class="summary-grid">
+
+    <!-- Attendance -->
+    <div class="card attendance" (click)="openAttendance()">
+      <h3>Attendance</h3>
+      <p>Total Records: {{ attendanceList.length }}</p>
+      <span>Manage Attendance</span>
+    </div>
+
+    <!-- Homework -->
+    <div class="card homework" (click)="goToHomeworkPage()">
+      <h3>Homework</h3>
+      <p>Total: {{ homeworkList.length }}</p>
+
+      <span>View All Homework</span>
+
+      <!-- preview only -->
+      <div *ngIf="homeworkList.length > 0">
+        <div *ngFor="let hw of homeworkList | slice:0:2">
+          <h4>{{ hw.subject }}</h4>
+          <p>{{ hw.description }}</p>
+          <small>Due: {{ hw.dueDate | date:'dd-MM-yyyy' }}</small>
+        </div>
+      </div>
+
+      <div *ngIf="homeworkList.length === 0">
+        <small>No homework available</small>
+      </div>
+    </div>
+
+    <!-- Notices -->
+    <div class="card notices" (click)="openNotices()">
+      <h3>Notices</h3>
+      <p>Total: {{ noticeList.length }}</p>
+      <span>View Notices</span>
+    </div>
+
+  </div>
+
+  <!-- NOTICE SECTION -->
+  <div class="section">
+    <h2>Latest Notices</h2>
+
+    <div *ngIf="noticeList.length === 0">
+      No notices available
+    </div>
+
+    <div class="notice-card" *ngFor="let notice of noticeList">
+      <h4>{{ notice.title }}</h4>
+      <p>{{ notice.description }}</p>
+      <small>{{ notice.startDate | date:'dd-MM-yyyy' }}</small>
+    </div>
+  </div>
+
+  <!-- ATTENDANCE SUMMARY -->
+  <div class="section">
+    <h2>Attendance Summary</h2>
+
+    <div *ngIf="attendanceList.length === 0">
+      No attendance data
+    </div>
+
+    <div class="attendance-card">
+      <p>Total Records: {{ attendanceList.length }}</p>
+      <p>Click "Manage Attendance" to update records</p>
+    </div>
+  </div>
+
+</div>

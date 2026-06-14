@@ -1,0 +1,103 @@
+<div class="dashboard-page">
+
+  <div class="bg-animation"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <h2 class="logo">SmartSchool</h2>
+
+    <ul class="menu">
+      <li *ngFor="let item of menuItems"
+          [class.active]="activeMenu === item"
+          (click)="setActive(item)"
+          style="cursor:pointer">
+        {{ item }}
+      </li>
+    </ul>
+
+    <!-- Notifications -->
+    <div class="notifications">
+      <h3>Notifications</h3>
+      <ul>
+        <li *ngFor="let note of notifications">{{ note }}</li>
+      </ul>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <!-- Header -->
+    <header class="navbar">
+      <div class="clock">⏰ {{ currentTime }}</div>
+    </header>
+
+    <!-- Cards -->
+    <section class="cards">
+
+      <!-- Total State -->
+      <div class="card clickable" (click)="goToStateDashboard()">
+        <h3>Total State</h3>
+        <p>{{ totalState }}</p>
+      </div>
+
+      <!-- Total District -->
+      <div class="card clickable" (click)="goToDistrictDashboard()">
+        <h3>Total District</h3>
+        <p>{{ totalDistrict }}</p>
+      </div>
+
+      <!-- Total School -->
+      <div class="card clickable" (click)="goToSchoolDashboard()">
+        <h3>Total School</h3>
+        <p>{{ totalSchool }}</p>
+      </div>
+
+    <!-- Revenue -->
+<div class="card revenue-card" (click)="goToRevenue()">
+
+  <div class="card-body text-center">
+    
+    <h3>💰 Revenue</h3>
+
+    <p class="amount">
+      ₹ {{ revenue || 0 }}
+    </p>
+
+    <small class="text-muted">Click to view details</small>
+
+  </div>
+
+</div>
+
+<div class="card clickable" (click)="goToPlan()">
+  <h3>Total Plans</h3>
+  <p>{{ plans.length }}</p>
+</div>
+<div class="card clickable" (click)="goToSubscription()">
+  <h3>Subscriptions</h3>
+  <p>{{ subscriptions.length }}</p>
+</div>
+
+      <!-- Active Users -->
+      <div class="card">
+        <h3>Active User</h3>
+        <p>{{ activeUser }}</p>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Floating Shapes -->
+  <div class="floating-shapes">
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+</div>
+
+<!-- Logout Button -->
+<button class="logout-btn" (click)="logout()">
+  <i class="fas fa-sign-out-alt"></i>
+  Logout
+</button>

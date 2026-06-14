@@ -1,0 +1,78 @@
+<div class="dashboard-container">
+
+  <!-- Notifications Component -->
+  <app-notification [notifications]="dashboardNotifications"></app-notification>
+
+  <!-- 🔷 Top Cards -->
+  <div class="card-grid">
+
+    <div class="card" (click)="goToDistrictList()">
+      <h3>Total Districts</h3>
+      <p>{{totalDistrict}}</p>
+    </div>
+
+    <div class="card" (click)="goToSchoolList()">
+      <h3>Total Schools</h3>
+      <p>{{totalSchool}}</p>
+    </div>
+
+    <div class="card">
+      <h3>Total Teachers</h3>
+      <p>{{totalTeacher}}</p>
+    </div>
+
+    <div class="card">
+      <h3>Total Students</h3>
+      <p>{{totalStudent}}</p>
+    </div>
+
+    <div class="card active">
+      <h3>Active Districts</h3>
+      <p>{{activeDistrict}}</p>
+    </div>
+
+    <div class="card inactive">
+      <h3>Inactive Districts</h3>
+      <p>{{inactiveDistrict}}</p>
+    </div>
+
+  </div>
+
+  <!-- 🔷 List Section -->
+  <div class="list-section">
+
+    <div class="list-header">
+      <h2>District List</h2>
+      <button class="add-btn">+ Add District</button>
+    </div>
+
+    <div class="table">
+
+      <div class="table-row header">
+        <span>Name</span>
+        <span>Status</span>
+        <span>Actions</span>
+      </div>
+
+      <!-- ❌ Dummy rows removed -->
+      <!-- Future: yaha *ngFor lagega -->
+
+      <!-- Example (future use):
+      <div class="table-row" *ngFor="let d of districts">
+        <span>{{d.name}}</span>
+        <span class="status" [ngClass]="d.status">{{d.status}}</span>
+      </div>
+      -->
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- Logout Button -->
+<button class="logout-btn" (click)="logout()">
+  <i class="fas fa-sign-out-alt"></i>
+  Logout
+</button>

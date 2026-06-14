@@ -1,0 +1,135 @@
+<!-- revenue.component.html -->
+<div class="revenue-container">
+
+  <!-- HEADER -->
+  <div class="revenue-header">
+    <div class="header-content">
+      <h1 class="revenue-title">
+        <i class="fas fa-chart-line"></i>
+        Total Revenue
+      </h1>
+      <p class="revenue-subtitle">Current period revenue overview</p>
+    </div>
+  </div>
+
+  <!-- MAIN CARD -->
+  <div class="revenue-card">
+
+    <!-- LOADING -->
+    <div *ngIf="loading" class="loading-container">
+      <div class="spinner"></div>
+      <p class="loading-text">Loading revenue data...</p>
+    </div>
+
+    <!-- CONTENT -->
+    <div *ngIf="!loading" class="revenue-content">
+
+      <!-- REVENUE -->
+      <div class="revenue-amount-container">
+        <div class="revenue-label">Total Revenue</div>
+
+        <div class="revenue-amount">
+          ₹ {{ totalRevenue }}
+        </div>
+
+        <div class="revenue-currency">INR</div>
+      </div>
+
+      <!-- STATS -->
+      <div class="stats-grid">
+
+        <div class="stat-card">
+          <div class="stat-icon"><i class="fas fa-arrow-up"></i></div>
+          <div class="stat-value">+12.5%</div>
+          <div class="stat-label">Monthly Growth</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon"><i class="fas fa-calendar-day"></i></div>
+          <div class="stat-value">30 days</div>
+          <div class="stat-label">Period</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon"><i class="fas fa-users"></i></div>
+          <div class="stat-value">1,247</div>
+          <div class="stat-label">Transactions</div>
+        </div>
+
+      </div>
+
+      <!-- ACTION BUTTONS -->
+      <div class="action-buttons">
+
+        <button class="btn btn-primary" (click)="loadRevenue()">
+          <i class="fas fa-sync-alt"></i> Refresh
+        </button>
+
+        <button class="btn btn-secondary">
+          <i class="fas fa-download"></i> Export
+        </button>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- DEBUG (REMOVE LATER) -->
+  <p>FILTER OPEN: {{ showFilter }}</p>
+
+  <!-- QUICK ACTIONS -->
+  <div class="quick-actions">
+
+    <button class="quick-btn" (click)="openFilter()">
+      <i class="fas fa-filter"></i>
+      Filters
+    </button>
+
+    <button class="quick-btn" (click)="viewReport()">
+      <i class="fas fa-chart-bar"></i>
+      View Report
+    </button>
+
+  </div>
+
+  <!-- FILTER PANEL (ONLY ONE TIME) -->
+  <div *ngIf="showFilter" class="filter-box">
+
+    <h4>Filter Revenue</h4>
+
+    <div style="display:flex; gap:10px; flex-wrap:wrap;">
+
+      <div>
+        <label>From Date</label>
+        <input type="date" [(ngModel)]="fromDate">
+      </div>
+
+      <div>
+        <label>To Date</label>
+        <input type="date" [(ngModel)]="toDate">
+      </div>
+
+    </div>
+
+    <br>
+
+    <button class="btn btn-primary" (click)="applyFilter()">
+      Apply Filter
+    </button>
+
+  </div>
+
+  <!-- REPORT BOX -->
+  <div *ngIf="totalRevenue && !loading" class="report-box">
+
+    <h3>Revenue Report</h3>
+
+    <p><b>Total Revenue:</b> ₹ {{ totalRevenue }}</p>
+
+    <p *ngIf="fromDate && toDate">
+      <b>Period:</b> {{ fromDate }} to {{ toDate }}
+    </p>
+
+  </div>
+
+</div>

@@ -1,0 +1,93 @@
+<div class="homework-container">
+
+  <!-- ================= HEADER ================= -->
+  <div class="header">
+    <h2>📚 Homework Dashboard</h2>
+    <p>Track and manage all assigned homework</p>
+  </div>
+
+  <!-- ================= MESSAGE SECTION ================= -->
+
+  <!-- ✅ SUCCESS MESSAGE -->
+  <div *ngIf="messageService.successMessage" class="alert alert-success">
+    {{ messageService.successMessage }}
+  </div>
+
+  <!-- ❌ ERROR MESSAGE -->
+  <div *ngIf="messageService.errorMessage" class="alert alert-danger">
+    {{ messageService.errorMessage }}
+  </div>
+
+  <!-- ================= CREATE HOMEWORK FORM ================= -->
+  <div class="homework-form" *ngIf="role === 'TEACHER'">
+
+    <h3>➕ Create Homework</h3>
+
+    <input type="text"
+           placeholder="Subject"
+           [(ngModel)]="newHomework.subject">
+
+    <textarea placeholder="Description"
+              [(ngModel)]="newHomework.description"></textarea>
+
+    <input type="date"
+           [(ngModel)]="newHomework.dueDate">
+
+    <button (click)="createHomework()">
+      Submit Homework
+    </button>
+
+  </div>
+
+  <!-- ================= HOMEWORK LIST ================= -->
+  <div class="homework-grid">
+
+    <div class="homework-card" *ngFor="let hw of homeworks">
+
+      <div class="card-top">
+        <h3>{{ hw.subject }}</h3>
+
+        <span class="badge"
+              [ngClass]="{
+                'submitted': hw.status === 'SUBMITTED',
+                'pending': hw.status === 'PENDING'
+              }">
+          {{ hw.status }}
+        </span>
+      </div>
+
+      <p class="description">
+        {{ hw.description }}
+      </p>
+
+      <!-- ✅ FIXED: footer INSIDE ngFor -->
+      <div class="card-footer">
+
+        <span class="due-date">
+          📅 {{ hw.dueDate | date:'dd MMM yyyy' }}
+        </span>
+
+        <span class="timer"
+              [ngClass]="getTimerClass(hw.dueDate)">
+          {{ getTimeLeft(hw.dueDate) }}
+        </span>
+
+        <!-- 🔥 DELETE BUTTON -->
+        <button (click)="deleteHomework(hw.id)">
+          🗑 Delete
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ================= BACK BUTTON ================= -->
+  <div class="back-container">
+    <button class="back-btn" (click)="goBack()">
+      ⬅ Back
+    </button>
+  </div>
+
+</div>

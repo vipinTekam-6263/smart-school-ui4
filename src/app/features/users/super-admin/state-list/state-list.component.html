@@ -1,0 +1,175 @@
+<div class="state-list-container">
+
+  <!-- 🔥 Header -->
+  <div class="header-section">
+
+    <h2>States Management</h2>
+
+    <!-- 🔍 UIVERSE SEARCH BAR ADDED -->
+    <div class="group">
+      <svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+        <g>
+          <path d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06z"></path>
+        </g>
+      </svg>
+
+      <input 
+        placeholder="Search States..." 
+        type="search" 
+        class="input"
+        (keyup)="applyFilter($event)">
+    </div>
+
+    <!-- 🔘 ACTION BUTTONS -->
+    <div class="header-actions">
+      <button mat-raised-button color="primary" (click)="refreshStates()">
+        <mat-icon>refresh</mat-icon>
+        Refresh
+      </button>
+
+      <button mat-raised-button color="accent" (click)="toggleAddForm()">
+        <mat-icon>{{showAddForm ? 'close' : 'add'}}</mat-icon>
+        {{showAddForm ? 'Cancel' : 'Add State'}}
+      </button>
+    </div>
+
+  </div>
+
+  <!-- 🔥 Add / Update State Form -->
+  <div class="add-form-section" *ngIf="showAddForm">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>
+          {{ isEditMode ? 'Update State' : 'Add New State' }}
+        </mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content>
+
+        <form (ngSubmit)="isEditMode ? updateState() : addState()">
+
+          <mat-form-field appearance="outline" fullWidth>
+            <mat-label>State Name</mat-label>
+            <input matInput 
+                   [(ngModel)]="newStateName" 
+                   name="stateName"
+                   placeholder="Enter state name"
+                   required
+                   maxlength="100">
+          </mat-form-field>
+
+          <div class="form-actions">
+            <button mat-raised-button color="primary" type="submit"
+                    [disabled]="isStateFormInvalid()">
+
+              <mat-spinner diameter="20" *ngIf="isAdding"></mat-spinner>
+
+              {{ isAdding 
+                  ? (isEditMode ? 'Updating...' : 'Adding...') 
+                  : (isEditMode ? 'Update State' : 'Add State') }}
+            </button>
+          </div>
+
+        </form>
+
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- 🔥 Stats -->
+  <div class="stats-section">
+    <mat-card>
+      <mat-card-content>
+        <div class="stat-item">
+          <strong>{{totalStates}}</strong>
+          <span>Total States</span>
+        </div>
+        <div class="stat-item">
+          <strong>{{states.length}}</strong>
+          <span>Active States</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- 🔥 TABLE -->
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>States List</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+
+      <!-- LOADING -->
+      <div class="loading-container" *ngIf="isLoading">
+        <mat-spinner></mat-spinner>
+        <p>Loading states...</p>
+      </div>
+
+      <!-- TABLE -->
+      <div class="table-container" *ngIf="!isLoading">
+
+        <table mat-table [dataSource]="dataSource" matSort>
+
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+            <td mat-cell *matCellDef="let state">{{state.id}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="stateName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>State Name</th>
+            <td mat-cell *matCellDef="let state">{{state.stateName}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+
+            <td mat-cell *matCellDef="let state">
+
+              <button mat-icon-button color="primary"
+                      (click)="editState(state)"
+                      matTooltip="Edit"
+                      [disabled]="isLoading">
+                <mat-icon>edit</mat-icon>
+              </button>
+
+              <button mat-icon-button color="warn"
+                      (click)="deleteState(state.id)"
+                      matTooltip="Delete"
+                      [disabled]="isLoading">
+                <mat-icon>delete</mat-icon>
+              </button>
+
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        </table>
+
+        <!-- NO DATA -->
+        <div class="no-data" *ngIf="dataSource.data.length === 0 && !isLoading">
+          <mat-icon>info</mat-icon>
+          <p>No states found</p>
+        </div>
+
+        <!-- BACK -->
+        <div style="margin-top:20px; text-align:center;">
+          <button class="back-btn" (click)="goBack()">
+            ⬅️ Back
+          </button>
+        </div>
+
+        <!-- PAGINATOR -->
+        <mat-paginator [pageSizeOptions]="[5,10,25,50]"
+                       showFirstLastButtons
+                       [pageSize]="pageSize">
+        </mat-paginator>
+
+      </div>
+
+    </mat-card-content>
+  </mat-card>
+
+</div>

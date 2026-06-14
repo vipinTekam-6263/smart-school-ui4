@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>School Admin Dashboard</title>
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<!-- ================= SIDEBAR ================= -->
+<div class="sidebar">
+
+  <div class="sidebar-header">
+    <div class="logo">
+      <i class="fas fa-graduation-cap"></i>
+      <span>SchoolPro Admin</span>
+    </div>
+  </div>
+
+  <nav class="nav-menu">
+
+    <a class="nav-item active">
+      <i class="fas fa-tachometer-alt"></i>
+      <span>Dashboard</span>
+    </a>
+
+    <a class="nav-item" (click)="goToStudents()">
+      <i class="fas fa-users"></i>
+      <span>Students</span>
+    </a>
+
+    <a class="nav-item" (click)="goToTeachers()">
+      <i class="fas fa-chalkboard-teacher"></i>
+      <span>Teachers</span>
+    </a>
+
+    <a class="nav-item" (click)="goToTeacherAssign()">
+  <i class="fas fa-user-plus"></i>
+  <span>Assign Teacher</span>
+</a>
+
+   <a class="nav-item" (click)="goToClasses()">
+  <i class="fas fa-door-open"></i>
+  <span>Classes</span>
+</a>
+
+   <a class="nav-item" (click)="goToAttendance()">
+  <i class="fas fa-clipboard-check"></i>
+  <span>Attendance</span>
+</a>
+
+ <a class="nav-item" (click)="goToHomework()">
+  <i class="fas fa-book"></i>
+  <span>Homework</span>
+</a>
+
+  <a class="nav-item" (click)="openNotice()">
+  <i class="fas fa-bullhorn"></i>
+  <span>Notices</span>
+</a>
+
+   <a class="nav-item" (click)="goToExam()">
+  <i class="fas fa-file-alt"></i>
+  <span>Exams</span>
+</a>
+
+
+<a class="nav-item" (click)="goToTeacherAssign()">
+  <i class="fas fa-user-plus"></i>
+  <span>Assign Teacher</span>
+</a>
+
+    <a class="nav-item">
+      <i class="fas fa-chart-line"></i>
+      <span>Reports</span>
+    </a>
+
+  </nav>
+
+</div>
+
+<!-- ================= MAIN CONTENT ================= -->
+<div class="main-content">
+
+  <!-- HEADER -->
+  <header class="header">
+
+    <div class="header-left">
+      <h1>Dashboard</h1>
+    </div>
+
+    <div class="header-right">
+
+      <div class="user-profile">
+        <span>Admin</span>
+      </div>
+
+      <button class="logout-btn" (click)="logout()">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </button>
+
+    </div>
+
+  </header>
+
+  <!-- ================= DASHBOARD CONTENT ================= -->
+  <main class="content">
+
+    <!-- WIDGETS -->
+    <div class="widgets-grid">
+
+      <div class="widget-card">
+        <i class="fas fa-users"></i>
+        <h3>Total Students</h3>
+        <p>{{schooldashboardstats.totalStudents}}</p>
+      </div>
+
+      <div class="widget-card">
+        <i class="fas fa-chalkboard-teacher"></i>
+        <h3>Total Teachers</h3>
+        <p>{{schooldashboardstats.totalTeachers}}</p>
+      </div>
+
+      <div class="widget-card">
+        <i class="fas fa-calendar-check"></i>
+        <h3>Present Today</h3>
+        <p>{{schooldashboardstats.presentToday}}</p>
+      </div>
+
+      <div class="widget-card">
+        <i class="fas fa-times-circle"></i>
+        <h3>Absent Today</h3>
+        <p>{{schooldashboardstats.absentToday}}</p>
+      </div>
+
+      <div class="widget-card">
+        <i class="fas fa-book-open"></i>
+        <h3>Pending Homework</h3>
+        <p>{{schooldashboardstats.pendingHomework}}</p>
+      </div>
+
+      <div class="widget-card">
+        <i class="fas fa-bell"></i>
+        <h3>Active Notices</h3>
+        <p>{{schooldashboardstats.activeNotices}}</p>
+      </div>
+
+    </div>
+
+  </main>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,185 @@
+<div class="container-fluid py-4">
+  <!-- Header -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center">
+        <h2 class="mb-0">
+          <i class="fas fa-book me-2 text-primary"></i>
+          Admin Homework Management
+        </h2>
+        <div class="btn-group" role="group">
+          <button class="btn btn-outline-primary" (click)="refresh()">
+            <i class="fas fa-sync-alt me-1"></i>Refresh
+          </button>
+          <button class="btn btn-outline-secondary" (click)="clearFilters()">
+            <i class="fas fa-times me-1"></i>Clear Filters
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading Spinner -->
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border spinner-border-lg text-primary" role="status">
+      <span class="visually-hidden">Loading homework...</span>
+    </div>
+    <p class="mt-3 text-muted">Loading homework data...</p>
+  </div>
+
+  <!-- Error Alert -->
+  <div *ngIf="error && !loading" class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+    <i class="fas fa-exclamation-triangle me-2"></i>
+    {{ error }}
+    <button type="button" class="btn-close" (click)="error = ''" aria-label="Close"></button>
+  </div>
+
+  <!-- Filters Row -->
+  <div *ngIf="!loading" class="card mb-4 shadow-sm">
+    <div class="card-header bg-light">
+      <h5 class="card-title mb-0">
+        <i class="fas fa-filter me-2"></i>Filters
+        <span *ngIf="selectedClass || selectedSection || selectedDate" class="badge bg-primary ms-2">
+          {{ filteredHomeworks.length }} results
+        </span>
+      </h5>
+    </div>
+    <div class="card-body">
+      <div class="row g-3">
+        <!-- Class Filter -->
+        <div class="col-lg-3 col-md-6">
+          <label class="form-label fw-semibold">Class</label>
+          <select 
+            [(ngModel)]="selectedClass" 
+            (ngModelChange)="onFilterChange()" 
+            class="form-select" 
+            [class.is-valid]="filteredHomeworks.length > 0">
+            <option value="">All Classes</option>
+            <option *ngFor="let cls of getUniqueClasses()" [value]="cls">{{ cls }}</option>
+          </select>
+        </div>
+
+        <!-- Section Filter -->
+        <div class="col-lg-3 col-md-6">
+          <label class="form-label fw-semibold">Section</label>
+          <select 
+            [(ngModel)]="selectedSection" 
+            (ngModelChange)="onFilterChange()" 
+            class="form-select">
+            <option value="">All Sections</option>
+            <option *ngFor="let sec of getUniqueSections()" [value]="sec">{{ sec }}</option>
+          </select>
+        </div>
+
+        <!-- Date Filter -->
+        <div class="col-lg-3 col-md-6">
+          <label class="form-label fw-semibold">Due Date</label>
+          <input 
+            type="date" 
+            [(ngModel)]="selectedDate" 
+            (ngModelChange)="onFilterChange()"
+            class="form-control">
+        </div>
+
+        <!-- Filter Actions -->
+        <div class="col-lg-3 col-md-6 d-flex align-items-end gap-2">
+          <button class="btn btn-outline-secondary flex-fill" (click)="clearFilters()">
+            <i class="fas fa-undo me-1"></i>Reset
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats Cards -->
+  <div *ngIf="!loading && homeworks.length > 0" class="row mb-4">
+    <div class="col-md-3">
+      <div class="card bg-primary text-white shadow-sm">
+        <div class="card-body text-center">
+          <i class="fas fa-book fa-2x mb-2 opacity-75"></i>
+          <h3 class="mb-0">{{ homeworks.length }}</h3>
+          <small>Total Homework</small>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card bg-success text-white shadow-sm">
+        <div class="card-body text-center">
+          <i class="fas fa-filter fa-2x mb-2 opacity-75"></i>
+          <h3 class="mb-0">{{ filteredHomeworks.length }}</h3>
+          <small>Filtered Results</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- No Data Message -->
+  <div *ngIf="!loading && filteredHomeworks.length === 0" class="text-center py-5">
+    <i class="fas fa-inbox fa-4x text-muted mb-4"></i>
+    <h4 class="text-muted mb-3">
+      {{ selectedClass || selectedSection || selectedDate ? 'No homework found' : 'No homework available' }}
+      {{ selectedClass || selectedSection || selectedDate ? 'for selected filters' : '' }}
+    </h4>
+    <p class="text-muted">Try adjusting your filters or refresh the data</p>
+    <button class="btn btn-outline-primary" (click)="refresh()">
+      <i class="fas fa-sync-alt me-2"></i>Refresh Data
+    </button>
+  </div>
+
+  <!-- Homework Table -->
+  <div *ngIf="!loading && filteredHomeworks.length > 0" class="card shadow-sm">
+    <div class="card-header bg-light d-flex justify-content-between align-items-center">
+      <h5 class="mb-0">
+        <i class="fas fa-list me-2"></i>
+        Homework List ({{ filteredHomeworks.length }})
+      </h5>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-hover mb-0">
+        <thead class="table-light">
+          <tr>
+            <th scope="col" class="border-0">ID</th>
+            <th scope="col" class="border-0">Class</th>
+            <th scope="col" class="border-0">Section</th>
+            <th scope="col" class="border-0">Subject</th>
+            <th scope="col" class="border-0">Description</th>
+            <th scope="col" class="border-0">Due Date</th>
+            <th scope="col" class="border-0">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let hw of filteredHomeworks; trackBy: trackByFn">
+            <td>{{ hw.id }}</td>
+            <td>
+              <span class="badge bg-primary">{{ hw.className }}</span>
+            </td>
+            <td>{{ hw.sectionName }}</td>
+            <td>
+              <strong>{{ hw.subject }}</strong>
+            </td>
+            <td class="text-truncate" style="max-width: 200px;" title="{{ hw.description }}">
+              {{ hw.description }}
+            </td>
+            <td>
+              <span class="badge {{ isOverdue(hw.dueDate) ? 'bg-danger' : 'bg-warning' }}">
+                {{ formatDate(hw.dueDate) }}
+              </span>
+            </td>
+            <td>
+              <div class="btn-group" role="group">
+                <button 
+                  class="btn btn-outline-danger btn-sm"
+                  (click)="deleteHomework(hw.id)"
+                  [disabled]="deletingId === hw.id">
+                  <span *ngIf="deletingId === hw.id" class="spinner-border spinner-border-sm me-1" role="status"></span>
+                  <i class="fas fa-trash me-1"></i>
+                  {{ deletingId === hw.id ? 'Deleting...' : 'Delete' }}
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

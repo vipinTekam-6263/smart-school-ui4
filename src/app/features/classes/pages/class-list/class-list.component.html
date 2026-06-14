@@ -1,0 +1,182 @@
+  <div class="class-list-container">
+
+    <!-- Header -->
+    <div class="header-section">
+      <div class="header-content">
+        <h1 class="page-title">
+          <i class="fas fa-graduation-cap"></i>
+          Manage Classes
+        </h1>
+
+        <div class="stats-grid">
+          <div class="stat-card total">
+            <div class="stat-number">{{ classStats().total }}</div>
+            <div class="stat-label">Total Classes</div>
+          </div>
+
+          <div class="stat-card active">
+            <div class="stat-number">{{ classStats().active }}</div>
+            <div class="stat-label">Active Classes</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search -->
+    <div class="search-section">
+      <div class="search-container">
+        <i class="fas fa-search search-icon"></i>
+        <input
+          type="text"
+          class="search-input"
+          placeholder="Search classes..."
+          (input)="onSearch($event)"
+        >
+      </div>
+    </div>
+
+    <!-- Form -->
+    <div class="form-section">
+      <div class="form-card">
+
+        <div class="form-header">
+          <h3>{{ isAddMode ? 'Add New Class' : 'Edit Class' }}</h3>
+          <button class="btn btn-secondary btn-sm" type="button" (click)="resetForm()">
+            <i class="fas fa-times"></i>
+            {{ isAddMode ? 'Cancel' : 'Reset' }}
+          </button>
+        </div>
+
+        <form [formGroup]="classForm" (ngSubmit)="isAddMode ? addClass() : updateClass()">
+
+          <div class="form-grid">
+
+            <div class="form-group">
+              <label>Class Name <span class="required">*</span></label>
+
+              <input
+                type="text"
+                class="form-control"
+                formControlName="name"
+                [class.is-invalid]="f['name'].invalid && f['name'].touched"
+                placeholder="Enter class name"
+              >
+
+              <div *ngIf="f['name'].invalid && f['name'].touched" class="invalid-feedback">
+                <div *ngIf="f['name'].errors?.['required']">Class name is required</div>
+                <div *ngIf="f['name'].errors?.['minlength']">Minimum 2 characters required</div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>
+                <input type="checkbox" formControlName="isActive">
+                Active Class
+              </label>
+            </div>
+
+          </div>
+
+          <div class="form-actions">
+            <button
+              type="submit"
+              class="btn btn-primary"
+              [disabled]="classForm.invalid || loading()"
+            >
+              <i class="fas" [ngClass]="isAddMode ? 'fa-plus' : 'fa-save'"></i>
+              {{ isAddMode ? 'Add Class' : 'Update Class' }}
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-section">
+      <div class="table-card">
+
+        <div class="table-header">
+          <h3>Classes List</h3>
+
+          <button class="btn btn-refresh" (click)="getClasses()" [disabled]="loading()">
+            <i class="fas fa-sync-alt" [class.spinning]="loading()"></i>
+            Refresh
+          </button>
+        </div>
+
+        <!-- Loading -->
+        <div *ngIf="loading()" class="loading-overlay">
+          <div class="spinner"></div>
+          <p>Loading classes...</p>
+        </div>
+
+        <!-- Empty -->
+        <div *ngIf="!loading() && filteredClasses().length === 0" class="empty-state">
+          <i class="fas fa-inbox empty-icon"></i>
+          <h4>No classes found</h4>
+          <p>{{ searchTerm() ? 'Try adjusting your search' : 'Create your first class' }}</p>
+        </div>
+
+        <!-- Table -->
+        <div *ngIf="!loading() && filteredClasses().length > 0" class="table-responsive">
+
+          <table class="classes-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Class Name</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr *ngFor="let cls of filteredClasses(); trackBy: trackByFn; let i = index">
+
+                <td>{{ i + 1 }}</td>
+
+                <td class="class-name">
+                  <span class="class-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                  </span>
+                  {{ cls.name }}
+                </td>
+
+                <td>
+                  <span class="status-badge"
+                        [ngClass]="cls.isActive ? 'active' : 'inactive'">
+                    {{ cls.isActive ? 'Active' : 'Inactive' }}
+                  </span>
+                </td>
+
+                <!-- ✅ FIXED ACTION ALIGNMENT -->
+                <td>
+                  <div class="action-buttons">
+                    <button class="btn btn-edit btn-sm" (click)="editClass(cls)">
+                      <i class="fas fa-edit"></i>
+                    </button>
+
+                    <button class="btn btn-delete btn-sm" (click)="deleteClass(cls.id)">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </div>
+                </td>
+
+              </tr>
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+    </div>
+
+    <div class="back-btn-container">
+  <button class="btn btn-secondary btn-sm" (click)="goBack()">
+    Back
+  </button>
+</div>
+
+  </div>
