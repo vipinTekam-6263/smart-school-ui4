@@ -89,7 +89,7 @@ clearSchoolId() {
 }
 
 
-  // 🔥 FORGOT PASSWORD (SEND OTP)
+  //  FORGOT PASSWORD (SEND OTP)
   forgotPassword(username: string): Observable<apiResponseDto<void>> {
     return this.http.post<apiResponseDto<void>>(
       `${this.baseUrl}/auth/forgot-password`,
@@ -100,7 +100,7 @@ clearSchoolId() {
     );
   }
 
-  // 🔥 VERIFY FORGOT PASSWORD OTP
+  //  VERIFY FORGOT PASSWORD OTP
   verifyForgotPasswordOtp(data: VerifyOtpRequestDto): Observable<apiResponseDto<any>> {
     return this.http.post<apiResponseDto<any>>(
       `${this.baseUrl}/auth/verify-forgot-password-otp`,
@@ -108,7 +108,7 @@ clearSchoolId() {
     );
   }
 
-  // 🔥 RESET PASSWORD
+  //  RESET PASSWORD
  resetPassword(
   username: string,
   otp: string,
